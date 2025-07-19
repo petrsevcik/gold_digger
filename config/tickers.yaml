@@ -1,0 +1,21 @@
+# Stock tickers configuration
+tickers:
+  - WBD
+  - PATH
+  - LYFT
+  - GRAB
+
+# Alternative structure with additional metadata (optional)
+# tickers_with_info:
+#   - symbol: WBD
+#     name: "Warner Bros. Discovery"
+#     sector: "Communication Services"
+#   - symbol: PATH
+#     name: "UiPath Inc."
+#     sector: "Technology"
+#   - symbol: LYFT
+#     name: "Lyft Inc."
+#     sector: "Technology"
+#   - symbol: GRAB
+#     name: "Grab Holdings Limited"
+#     sector: "Technology"

@@ -1,0 +1,22 @@
+[project]
+name = "gold-digger"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+requires-python = ">=3.11"
+dependencies = [
+    "yfinance>=0.2.65",
+    "matplotlib>=3.7.0",
+    "pandas>=2.0.0",
+    "playwright>=1.53.0",
+    "curl-cffi>=0.11.4",
+    "beautifulsoup4>=4.13.4",
+    "requests>=2.32.4",
+    "sqlalchemy>=2.0.0",
+    "pymysql>=1.1.0",
+    "python-decouple>=3.8",
+    "isort>=6.0.1",
+    "ruff>=0.12.4",
+    "black>=25.1.0",
+    "pyyaml>=6.0",
+]
