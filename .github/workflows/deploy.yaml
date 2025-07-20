@@ -1,0 +1,29 @@
+name: Gold Digger CI/CD
+
+on:
+  pull_request:
+    branches:
+      - 'main'
+  push:
+    branches:
+      - 'main'
+
+    # For manual triggering
+  workflow_dispatch:
+
+jobs:
+  deploy:
+    if: ${{ (github.event_name == 'push') && (github.ref == 'refs/heads/main') }}
+    name: Deploy to Hetzner
+    runs-on: ubuntu-latest
+    steps:
+      - name: update coverificator_scrapers on server
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.IP }}
+          username: ${{ secrets.USERNAME }}
+          port: ${{ secrets.PORT }}
+          key: ${{ secrets.SSH_KEY }}
+          script: |
+            cd /home/projects/gold_digger
+            /usr/bin/git checkout main && /usr/bin/git pull https://${{ secrets.PAT }}@github.com/petrsevcik/gold_digger.git
