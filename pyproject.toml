@@ -1,7 +1,7 @@
 [project]
 name = "gold-digger"
 version = "0.1.0"
-description = "Add your description here"
+description = "Yahoo Finance data collection tool for stocks, options, and company information"
 readme = "README.md"
 requires-python = ">=3.11"
 dependencies = [
@@ -19,4 +19,8 @@ dependencies = [
     "ruff>=0.12.4",
     "black>=25.1.0",
     "pyyaml>=6.0",
+    "click>=8.2.1",
 ]
+
+[project.scripts]
+gold-digger = "src.main:cli"

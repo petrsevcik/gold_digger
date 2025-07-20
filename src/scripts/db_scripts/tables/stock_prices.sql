@@ -1,8 +1,12 @@
 CREATE TABLE `stock_prices` (
-  `id` int NOT NULL AUTO_INCREMENT,
-  `date` date NOT NULL,
-  `ticker` varchar(10) NOT NULL,
-  `price` decimal(10,2) NOT NULL,
-  `updated_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+  `id` INT NOT NULL AUTO_INCREMENT,
+  `date` DATETIME NOT NULL,
+  `ticker` VARCHAR(10) NOT NULL,
+  `open` DECIMAL(10,2) NULL,
+  `high` DECIMAL(10,2) NULL,
+  `low` DECIMAL(10,2) NULL,
+  `close` DECIMAL(10,2) NOT NULL,
+  `updated_at` TIMESTAMP NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `uk_date_ticker` (`date`, `ticker`, `close`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;

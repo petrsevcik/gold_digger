@@ -1,4 +1,3 @@
-
 from typing import Any, Dict, Optional
 
 import pandas as pd
@@ -10,15 +9,15 @@ from utils.logging_config import get_logger
 class YahooFinanceClient:
     """
     A client for fetching stock data from Yahoo Finance using the yfinance library.
-    
+
     This class provides methods to get current stock prices, historical data,
     and other stock information for a given ticker symbol.
     """
-    
+
     def __init__(self, ticker: str):
         """
         Initialize the Yahoo Finance client with a stock ticker.
-        
+
         Args:
             ticker (str): The stock ticker symbol (e.g., 'AAPL', 'MSFT', 'GOOGL')
         """
@@ -33,25 +32,25 @@ class YahooFinanceClient:
         if len(dat.info) == 1 and dat.info.get("trailingPegRatio") == None:
             raise ValueError(f"Invalid ticker: {self.ticker}. No data found")
         return dat
-    
+
     def get_current_price(self) -> Optional[float]:
         """
         Get the current stock price.
-        
+
         Returns:
             float: Current stock price, or None if not available
         """
         try:
             info = self.stock.info
-            return info.get('regularMarketPrice', info.get('currentPrice'))
+            return info.get("regularMarketPrice", info.get("currentPrice"))
         except Exception as e:
             self.logger.error(f"Error getting current price for {self.ticker}: {e}")
             return None
-    
+
     def get_stock_info(self) -> Dict[str, Any]:
         """
         Get comprehensive stock information.
-        
+
         Returns:
             dict: Dictionary containing stock information
         """
@@ -60,21 +59,23 @@ class YahooFinanceClient:
         except Exception as e:
             self.logger.error(f"Error getting stock info for {self.ticker}: {e}")
             return {}
-    
-    def get_historical_data(self, 
-                          period: str = "1mo", 
-                          start: Optional[str] = None, 
-                          end: Optional[str] = None,
-                          interval: str = "1d") -> Optional[pd.DataFrame]:
+
+    def get_historical_data(
+        self,
+        period: str = "1mo",
+        start: Optional[str] = None,
+        end: Optional[str] = None,
+        interval: str = "1d",
+    ) -> Optional[pd.DataFrame]:
         """
         Get historical stock data.
-        
+
         Args:
             period (str): Data period to download ("1d", "5d", "1mo", "3mo", "6mo", "1y", "2y", "5y", "10y", "ytd", "max")
             start (str, optional): Start date in YYYY-MM-DD format
             end (str, optional): End date in YYYY-MM-DD format
             interval (str): Data interval ("1m", "2m", "5m", "15m", "30m", "60m", "90m", "1h", "1d", "5d", "1wk", "1mo", "3mo")
-        
+
         Returns:
             pd.DataFrame: Historical data with OHLCV columns, or None if error
         """
@@ -87,10 +88,20 @@ class YahooFinanceClient:
             self.logger.error(f"Error getting historical data for {self.ticker}: {e}")
             return None
     
+    def get_option_dates(self) -> tuple:
+        return self.stock.options
+    
+    def get_options(self, date: str, option_type: str) -> pd.DataFrame:
+        assert option_type in {"calls", "puts"}
+        if option_type == "calls":
+            return self.stock.option_chain(date=date).calls
+        return self.stock.option_chain(date=date).puts
+
+
     def __str__(self) -> str:
         """String representation of the client."""
         return f"YahooFinanceClient(ticker='{self.ticker}')"
-    
+
     def __repr__(self) -> str:
         """Detailed string representation of the client."""
         return f"YahooFinanceClient(ticker='{self.ticker}')"
@@ -100,7 +111,7 @@ class YahooFinanceClient:
 if __name__ == "__main__":
     # Create a client for Apple stock
     client = YahooFinanceClient("AAPL")
-    
+
     # Get current price
     current_price = client.get_current_price()
     print(f"Current price of {client.ticker}: ${current_price}")
